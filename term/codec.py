@@ -3,15 +3,18 @@
     but always works.
 """
 import logging
+import os
 
 LOG = logging.getLogger("term")
 
-
-try:
-    import term.native_codec_impl as co_impl
-except ImportError:
-    LOG.warning("Native term ETF codec library import failed, falling back to slower Python impl")
+if "1" == os.getenv('TERM_FORCE_PYTHON_CODE'):
     import term.py_codec_impl as co_impl
+else:
+   try:
+       import term.native_codec_impl as co_impl
+   except ImportError:
+       LOG.warning("Native term ETF codec library import failed, falling back to slower Python impl")
+       import term.py_codec_impl as co_impl
 
 
 def binary_to_term(data: bytes, options=None, decode_hook=None):
