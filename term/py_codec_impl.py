@@ -694,7 +694,7 @@ def term_to_binary_2(val, encode_hook: [Callable, None]) -> bytes:
     elif isinstance(val, Reference):
         return _pack_ref(val)
 
-    elif type(val) == bytes:
+    elif isinstance(val, (bytearray, bytes)):
         return _pack_binary(val, 8)
 
     elif isinstance(val, BitString):
